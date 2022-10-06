@@ -1,8 +1,10 @@
 import requests
+from dotenv import load_dotenv
+import os
 
 OWM_Endpoint = "https://api.openweathermap.org/data/2.5/forecast"
-
-api_key = "d628bcc349ceb4b0533b2177d4cca0a2"
+load_dotenv()
+api_key = os.getenv("OWM_API_KEY")
 
 MY_LAT = 12.449229
 MY_LONG = 98.627060
