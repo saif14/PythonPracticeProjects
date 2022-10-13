@@ -18,6 +18,7 @@ class FlightSearch:
         headers = {"apikey": TEQUILLA_API_KEY}
         query = {"term": city, "location_types": "city"}
         response = requests.get(url=location_end_point, headers=headers, params=query)
+        response.raise_for_status()
         results = response.json()["locations"]
         code = results[0]["code"]
         return code
