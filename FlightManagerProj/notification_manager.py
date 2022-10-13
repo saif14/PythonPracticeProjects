@@ -19,10 +19,10 @@ class NotificationManager:
               f"from {outbound_date} to {inbound_date}"
         return msg
 
-    def sendNotification(self, msg):
+    def sendNotification(self, msg, to_mail_id):
         with smtplib.SMTP("smtp.gmail.com") as connection:
             connection.starttls()
             connection.login(user=self.MAIL_ID, password=self.MAIL_KEY)
             connection.sendmail(from_addr=self.MAIL_ID,
-                                to_addrs="mahmud.saif@ymail.com",
+                                to_addrs=to_mail_id,
                                 msg=f"Subject:Flight Deal\n\n{msg}")

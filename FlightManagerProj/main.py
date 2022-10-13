@@ -2,21 +2,32 @@ from data_manager import DataManager
 from flight_search import FlightSearch
 from flight_data import FlightData
 from notification_manager import NotificationManager
+from user_management import UserManagement
 
 data_manager = DataManager()
 flight_search = FlightSearch()
 flight_data = FlightData()
 notification_manager = NotificationManager()
+user_management = UserManagement()
 
-sheet_data = data_manager.get_row()
+sheet_data = data_manager.get_rows(sheet="prices")
 #
 """Updating the IATA code for each city in the google sheet"""
 # for data in sheet_data:
 #     iataCode = flight_search.get_iata_code(data["city"])
-#     data_manager.update_row_data(column_name='iataCode', row_id=data['id'], updated_value=iataCode)
+#     data_manager.update_row_data(sheet="prices", column_name='iataCode', row_id=data['id'], updated_value=iataCode)
 #     pass
 
-"""Getting the price of journey and sending notification"""
+
+"""adding a new user"""
+# user_management.add_user()
+
+"""fetching all the user data"""
+all_user_data = user_management.get_all_users()
+print(all_user_data)
+
+
+"""Getting the price of journey and sending notification to all users"""
 for data in sheet_data:
     # print(data)
     sheet_price = data['lowestPrice']
@@ -33,5 +44,6 @@ for data in sheet_data:
             inbound_date=journey_data['date_to']
         )
         print(msg)
-        notification_manager.sendNotification(msg)
+        for user in all_user_data:
+            notification_manager.sendNotification(msg, user["email"])
 

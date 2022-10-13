@@ -19,19 +19,29 @@ class DataManager:
             # "Content-Type": "application/json"
         }
 
-    def get_row(self):
-        GOOGLE_SHEET_ENDPOINT_GET = "https://api.sheety.co/b528a55444e1450cb1d458a3f37f7b89/flightDeals/prices"
+    def get_rows(self, sheet):
+        GOOGLE_SHEET_ENDPOINT_GET = f"https://api.sheety.co/b528a55444e1450cb1d458a3f37f7b89/flightDeals/{sheet}"
         res = requests.get(url=GOOGLE_SHEET_ENDPOINT_GET, auth=self.basic, headers=self.sheet_header)
         res.raise_for_status()
-        return res.json()['prices']
+        return res.json()[f'{sheet}']
 
-    def update_row_data(self, row_id, column_name, updated_value):
+    def update_row_data(self, sheet, row_id, column_name, updated_value):
         """It will update row in the google sheet"""
-        GOOGLE_SHEET_ENDPOINT_PUT=f"https://api.sheety.co/b528a55444e1450cb1d458a3f37f7b89/flightDeals/prices/{row_id}"
+        GOOGLE_SHEET_ENDPOINT_PUT=f"https://api.sheety.co/b528a55444e1450cb1d458a3f37f7b89/flightDeals/{sheet}/{row_id}"
         update_body = {
             "price": {
                 column_name: updated_value
             }
         }
         res = requests.put(url=GOOGLE_SHEET_ENDPOINT_PUT, json=update_body, auth=self.basic, headers=self.sheet_header)
+
+    def post_row_data(self, sheet, data: dict):
+        """It will post a row in the google sheet"""
+        GOOGLE_SHEET_ENDPOINT_PUT=f"https://api.sheety.co/b528a55444e1450cb1d458a3f37f7b89/flightDeals/{sheet}"
+        update_body = {
+            "user": data
+        }
+        res = requests.post(url=GOOGLE_SHEET_ENDPOINT_PUT, json=update_body, auth=self.basic, headers=self.sheet_header)
+        res.raise_for_status()
+        print("Done adding a row")
 
