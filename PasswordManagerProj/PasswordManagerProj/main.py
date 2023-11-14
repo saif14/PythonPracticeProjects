@@ -5,6 +5,7 @@ import pyperclip
 import json
 
 
+
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
 def password_generator():
